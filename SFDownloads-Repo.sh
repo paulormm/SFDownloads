@@ -40,19 +40,19 @@ cat $1 | while read line; do
 
     case "$repository_type" in
         'CVS')
-          repository_command="rsync -av $project_name.cvs.sourceforge.net::cvsroot/$project_name/* ."
+          repository_command="rsync -avz $project_name.cvs.sourceforge.net::cvsroot/$project_name/* ."
         ;;
         'SVN')
-          repository_command="rsync -av $project_name.svn.sourceforge.net::svn/$project_name/* ."
+          repository_command="rsync -avz $project_name.svn.sourceforge.net::svn/$project_name/* ."
         ;;
         'GIT')
-          repository_command="rsync -av --exclude '.git' $project_name.git.sourceforge.net::gitroot/$project_name/* ."
+          repository_command="rsync -avz --exclude '.git' $project_name.git.sourceforge.net::gitroot/$project_name/* ."
         ;;
         'Bazaar')
-          repository_command="rsync -av --exclude '.bzr' $project_name.bzr.sourceforge.net::bzrroot/$project_name/* ."
+          repository_command="rsync -avz --exclude '.bzr' $project_name.bzr.sourceforge.net::bzrroot/$project_name/* ."
         ;;
         'Mercurial')
-          repository_command="rsync -av $project_name.hg.sourceforge.net::hgroot/$project_name/* ."
+          repository_command="rsync -avz $project_name.hg.sourceforge.net::hgroot/$project_name/* ."
         ;;
     esac
 	
