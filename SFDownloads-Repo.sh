@@ -48,7 +48,7 @@ cat $1 | while read line; do
         'GIT')
           repository_command="rsync -av $project_name.git.sourceforge.net::gitroot/$project_name/* ."
         ;;
-        'Bazzar')
+        'Bazaar')
           repository_command="rsync -av $project_name.bzr.sourceforge.net::bzrroot/$project_name/* ."
         ;;
         'Mercurial')
