@@ -1,0 +1,50 @@
+=================
+= Description
+=================
+Adapted from SFDownloads-File script.
+Given a file, as an argument, with a list of SourceForge.Net projects and their
+type of repositories, according to shown in the develop page of each project page
+at SourceForge.Net, this script (SFDownloads-Repo) tries to download a copy of these
+repositories using rsync command.
+
+=================
+= Authors
+=================
+ Antonio Terceiro, terceiro@softwarelivre.org
+ Beraldo Leal, beraldo@beraldo.com
+ Nelson Lago, lago@ime.usp.br
+ Paulo Meirelles, paulo@softwarelivre.org
+
+=================
+= Copyright
+=================
+
+Copyright (c) The SFDownloads-Repo developers.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/lgpl.html.
+
+=================
+= Acknowledgments
+=================
+
+The authors have been supported by organizations:
+
+Brazilian National Research Council (CNPQ)
+http://www.cnpq.br/
+
+Qualipso project
+http://www.qualipso.org/
+
+USP FLOSS Competence Center
+http://ccsl.ime.usp.br/
