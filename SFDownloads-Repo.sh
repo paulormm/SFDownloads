@@ -46,10 +46,10 @@ cat $1 | while read line; do
           repository_command="rsync -av $project_name.svn.sourceforge.net::svn/$project_name/* ."
         ;;
         'GIT')
-          repository_command="rsync -av $project_name.git.sourceforge.net::gitroot/$project_name/* ."
+          repository_command="rsync -av --exclude '.git' $project_name.git.sourceforge.net::gitroot/$project_name/* ."
         ;;
         'Bazaar')
-          repository_command="rsync -av $project_name.bzr.sourceforge.net::bzrroot/$project_name/* ."
+          repository_command="rsync -av --exclude '.bzr' $project_name.bzr.sourceforge.net::bzrroot/$project_name/* ."
         ;;
         'Mercurial')
           repository_command="rsync -av $project_name.hg.sourceforge.net::hgroot/$project_name/* ."
