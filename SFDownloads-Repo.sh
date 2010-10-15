@@ -4,76 +4,87 @@ VERBOSE=NO
 DEBUG=NO
 MIRROR=ufpr
 
-if [ x$1 == x -o "$1" == "help" ]; then
+RSYNC="/usr/bin/rsync"
+URL="sourceforge.net"
+
+errmsg() {
+     echo "`basename $0`: $1" >&2
+     if [ $# -ne 1 ]; then
+         exit $2
+     fi
+}
+
+debugmsg() {
+    if [ "$DEBUG" != "" ]; then
+        echo "`basename $0`: $1" >&2
+    fi
+}
+
+if [ $# -ne 1 -o "$1" == "help" ]; then
     echo
-    echo "    `basename $0`: SFDownloads-Repo: download from SourceForge.Net the repositories of free software projects"
+    echo "    `basename $0`: SFDownloads-Repo: download from SourceForge.Net   "
+    echo "    the repositories of free software projects."
     echo
-    echo "    Given a file, as an argument, with a list of SourceForge.Net projects and their"
-    echo "    type of repositories, according to shown in the develop page of each project page"
-    echo "    at SourceForge.Net, this script tries to download a copy of these"
-    echo "    repositories using rsync command."
+    echo "    Given a file, as an argument, with a list of SourceForge.Net     "
+    echo "    projects and their type of repositories, according to shown in   "
+    echo "    the develop page of each project page at SourceForge.Net, this   "
+    echo "    script tries to download a copy of these repositories using rsync"
+    echo "    command."
     echo
     echo "    usage: `basename $0` filename"
     echo
     exit 0
 fi
 
-errmsg() {
-    echo "`basename $0`: $1" >&2
-}
+[ -x $RSYNC ] || errmsg "$RSYNC not found." -1
 
-debugmsg() {
-    if [ x$DEBUG != x ]; then
-        echo "`basename $0`: $1" >&2
-    fi
-}
 
 cat $1 | while read line; do
-    project_name="`echo "$line" | cut -d, -f1 | sed 's/"//g'`"
+    project="`echo "$line" | cut -d, -f1 | sed 's/"//g'`"
     repository_type="`echo "$line" | cut -d, -f2 | sed 's/"//g'`"
 
-    dirname="$project_name"
+    dir_name="$project"
 
-    if [ $VERBOSE == YES ]; then
-        echo "`basename $0`: Downloading project $project_name from a $repository_type repository"
-    fi
+    if [ "$VERBOSE" == "YES" ]; then
+        echo "`basename $0`: Downloading project $project from a "
+        echo "$repository_type repository"
+     fi
 
     case "$repository_type" in
         'CVS')
-          repository_command="rsync -avz $project_name.cvs.sourceforge.net::cvsroot/$project_name/* ."
+         repository_command="$RSYNC -avz $project.cvs.$URL::cvsroot/$project/* ."
         ;;
         'SVN')
-          repository_command="rsync -avz $project_name.svn.sourceforge.net::svn/$project_name/* ."
+         repository_command="$RSYNC -avz $project.svn.$URL::svn/$project/* ."
         ;;
         'GIT')
-          repository_command="rsync -avz --exclude '.git' $project_name.git.sourceforge.net::gitroot/$project_name/* ."
+         repository_command="$RSYNC -avz --exclude '.git' $project.git.$URL::gitroot/$project/* ."
         ;;
         'Bazaar')
-          repository_command="rsync -avz --exclude '.bzr' $project_name.bzr.sourceforge.net::bzrroot/$project_name/* ."
+         repository_command="$RSYNC -avz --exclude '.bzr' $project.bzr.$URL::bzrroot/$project/* ."
         ;;
         'Mercurial')
-          repository_command="rsync -avz $project_name.hg.sourceforge.net::hgroot/$project_name/* ."
+         repository_command="$RSYNC -avz $project.hg.$URL::hgroot/$project/* ."
         ;;
     esac
 	
     # I give up!
-    if [ -d "$dirname" ]; then
-       debugmsg "$project_name already downloaded"
+    if [ -d "$dir_name" ]; then
+       debugmsg "$project already downloaded"
        continue
     fi
 
-       mkdir -p "$dirname"
+    mkdir -p "$dir_name"
 
-       pushd "$dirname" >/dev/null
+    pushd "$dir_name" >/dev/null
 	 
-       debugmsg "$repository_command ..."
-       $repository_command
+    debugmsg "$repository_command ..."
+    $repository_command
 
-       err=$?
-       if [ $err -gt 0 ]; then
-          errmsg "Failed downloading for project $project_name"
-	  rm -rf "$dirname"
-       fi
+    if [ $? -gt 0 ]; then
+        errmsg "Failed downloading for project $project"
+        rm -rf "$dir_name"
+    fi
 
        popd > /dev/null
 done
