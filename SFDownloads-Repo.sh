@@ -6,68 +6,6 @@ MIRROR=ufpr
 
 RSYNC="/usr/bin/rsync"
 URL="sourceforge.net"
-EXCLUDE_FILES="--exclude=*.jar*
-               --exclude=*.zip*
-               --exclude=*.tar*
-               --exclude=*.gz*
-               --exclude=*.rar*
-               --exclude=*.tgz*
-               --exclude=*.bz*
-               --exclude=*.dll*
-               --exclude=*.exe*
-               --exclude=*.PNG*
-               --exclude=*.png*
-               --exclude=*.ico*
-               --exclude=*.jpg*
-               --exclude=*.JPG*
-               --exclude=*.jpeg*
-               --exclude=*.gif*
-               --exclude=*.bmp*
-               --exclude=*.psd*
-               --exclude=*.dat*
-               --exclude=*.txt*
-               --exclude=*.properties*
-               --exclude=*.iso*
-               --exclude=*.torrent*
-               --exclude=*.xml*
-               --exclude=*.raw*
-               --exclude=*.pdf*
-               --exclude=*.doc*
-               --exclude=*.odt*
-               --exclude=*.tex*
-               --exclude=*.css*
-               --exclude=*.tmpl*
-               --exclude=*.shtml*
-               --exclude=*.htm*
-               --exclude=*.mf*
-               --exclude=*.log*
-               --exclude=*.ini*
-               --exclude=*.project*
-               --exclude=*.classpath*
-               --exclude=*.db*
-               --exclude=*.config*
-               --exclude=*.pat*
-               --exclude=*.nsi*
-               --exclude=*.js*
-               --exclude=*.jni*
-               --exclude=*.so*
-               --exclude=*.diff*
-               --exclude=*.swf*
-               --exclude=*.emz*
-               --exclude=*.dmg*
-               --exclude=*.xsl*
-               --exclude=*.xsd*
-               --exclude=*.stf*
-               --exclude=*.vuze*
-               --exclude=*.war*"
-EXCLUDE="
-               --exclude=CVSROOT
-               --exclude=*.cvsignore*
-               --exclude=.git
-               --exclude=.svn
-               --exclude=.bzr
-               --exclude=.hg
-               $EXCLUDE_FILES"
 
 errmsg() {
      echo "`basename $0`: $1" >&2
@@ -77,14 +15,14 @@ errmsg() {
 }
 
 debugmsg() {
-    if [ "$DEBUG" != "" ]; then
+    if [ x$DEBUG != x ]; then
         echo "`basename $0`: $1" >&2
     fi
 }
 
 if [ $# -ne 1 -o "$1" == "help" ]; then
     echo
-    echo "    `basename $0`: SFDownloads-Repo: download from SourceForge.Net   "
+    echo "    `basename -n $0`: SFDownloads-Repo: download from SourceForge.Net"
     echo "    the repositories of free software projects."
     echo
     echo "    Given a file, as an argument, with a list of SourceForge.Net     "
@@ -110,28 +48,23 @@ cat $1 | while read line; do
     if [ "$VERBOSE" == "YES" ]; then
         echo "`basename $0`: Downloading project $project from a "
         echo "$repository_type repository"
-     fi
+    fi
 
     case "$repository_type" in
         'CVS')
-         repository_command="$RSYNC -avz $EXCLUDE
-                                    $project.cvs.$URL::cvsroot/$project/* ."
+        repository_command="$RSYNC -avz $project.cvs.$URL::cvsroot/$project/* ."
         ;;
         'SVN')
-         repository_command="$RSYNC -avz $EXCLUDE
-                                    $project.svn.$URL::svn/$project/* ."
+        repository_command="$RSYNC -avz $project.svn.$URL::svn/$project/* ."
         ;;
         'GIT')
-         repository_command="$RSYNC -avz $EXCLUDE
-                                    $project.git.$URL::gitroot/$project/* ."
+        repository_command="$RSYNC -avz $project.git.$URL::gitroot/$project/* ."
         ;;
         'Bazaar')
-         repository_command="$RSYNC -avz $EXCLUDE
-                                    $project.bzr.$URL::bzrroot/$project/* ."
+        repository_command="$RSYNC -avz $project.bzr.$URL::bzrroot/$project/* ."
         ;;
         'Mercurial')
-         repository_command="$RSYNC -avz $EXCLUDE
-                                    $project.hg.$URL::hgroot/$project/* ."
+        repository_command="$RSYNC -avz $project.hg.$URL::hgroot/$project/* ."
         ;;
     esac
 	
