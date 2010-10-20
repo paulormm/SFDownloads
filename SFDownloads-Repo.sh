@@ -51,20 +51,20 @@ cat $1 | while read line; do
     fi
 
     case "$repository_type" in
-        'CVS')
-        repository_command="$RSYNC -avz $project.cvs.$URL::cvsroot/$project/* ."
-        ;;
-        'SVN')
-        repository_command="$RSYNC -avz $project.svn.$URL::svn/$project/* ."
-        ;;
-        'GIT')
+        '1-GIT')
         repository_command="$RSYNC -avz $project.git.$URL::gitroot/$project/* ."
         ;;
-        'Bazaar')
+        '2-Bazaar')
         repository_command="$RSYNC -avz $project.bzr.$URL::bzrroot/$project/* ."
         ;;
-        'Mercurial')
+        '3-Mercurial')
         repository_command="$RSYNC -avz $project.hg.$URL::hgroot/$project/* ."
+        ;;
+        '4-SVN')
+        repository_command="$RSYNC -avz $project.svn.$URL::svn/$project/* ."
+        ;;        
+        '5-CVS')
+        repository_command="$RSYNC -avz $project.cvs.$URL::cvsroot/$project/* ."
         ;;
     esac
 	
